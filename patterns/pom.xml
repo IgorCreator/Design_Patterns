@@ -16,6 +16,7 @@
         <module>facade</module>
         <module>factory</module>
         <module>iterator</module>
+        <module>observer</module>
     </modules>
 
     <build>
