@@ -19,6 +19,7 @@
         <module>observer</module>
         <module>singleton</module>
         <module>strategy</module>
+        <module>template-method</module>
     </modules>
 
     <build>
