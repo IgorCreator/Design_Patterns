@@ -13,6 +13,7 @@
         <module>command</module>
         <module>composite</module>
         <module>decorator</module>
+        <module>facade</module>
     </modules>
 
     <build>
