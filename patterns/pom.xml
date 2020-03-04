@@ -17,6 +17,7 @@
         <module>factory</module>
         <module>iterator</module>
         <module>observer</module>
+        <module>singleton</module>
     </modules>
 
     <build>
