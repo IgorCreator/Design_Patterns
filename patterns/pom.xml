@@ -12,6 +12,7 @@
         <module>adapter</module>
         <module>command</module>
         <module>composite</module>
+        <module>decorator</module>
     </modules>
 
     <build>
