@@ -39,6 +39,10 @@ public class HasQuarterState implements State {
     }
 
     @Override
+    public void refill() {
+    }
+
+    @Override
     public String toString() {
         return "waiting for turn of crank";
     }

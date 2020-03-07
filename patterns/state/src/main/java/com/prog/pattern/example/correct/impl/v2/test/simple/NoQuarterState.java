@@ -29,6 +29,10 @@ public class NoQuarterState implements State {
     }
 
     @Override
+    public void refill() {
+    }
+
+    @Override
     public String toString() {
         return "waiting for quarter";
     }

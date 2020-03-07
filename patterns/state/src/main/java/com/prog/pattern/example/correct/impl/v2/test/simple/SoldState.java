@@ -34,6 +34,10 @@ public class SoldState implements State {
     }
 
     @Override
+    public void refill() {
+    }
+
+    @Override
     public String toString() {
         return "delivering a gumball";
     }

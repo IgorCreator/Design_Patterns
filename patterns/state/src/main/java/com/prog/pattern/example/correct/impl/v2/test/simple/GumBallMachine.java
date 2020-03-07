@@ -55,6 +55,12 @@ public class GumBallMachine {
         }
     }
 
+    void refill(int qtyBalls){
+        this.balls += qtyBalls;
+        currentState.refill();
+        System.out.println("Machine refilled. Balls quantity: " + balls);
+    }
+
     public State getHasQuarterState() {
         return hasQuarterState;
     }
