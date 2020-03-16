@@ -1,7 +1,5 @@
 package com.prog.pattern.example.incorrect.impl.v2;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 public class Beverage {
     private String description;
 
@@ -13,7 +11,7 @@ public class Beverage {
     public String getDescription() {
         description = "Unknow beverage";
         return description;
-    };
+    }
 
     public double cost(){
         double rez = 0;
@@ -24,7 +22,7 @@ public class Beverage {
         if(hasMocha()) rez += 0.6;
 
         return rez;
-    };
+    }
 
     public String hasDescription() {
         return description;

@@ -49,7 +49,7 @@ public class Menu extends MenuComponent {
 
     public Iterator<MenuComponent> createIterator() {
         if (iterator == null) {
-            iterator = new CompositeIterator(menuComponents.iterator());
+            this.iterator = menuComponents.iterator();
         }
         return iterator;
     }
