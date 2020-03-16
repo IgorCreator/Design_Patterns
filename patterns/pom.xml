@@ -22,6 +22,7 @@
         <module>template-method</module>
         <module>state</module>
         <module>proxxy</module>
+        <module>combined_usage</module>
     </modules>
 
     <build>
