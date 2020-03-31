@@ -56,7 +56,7 @@ public class StatementReader {
 
     private int amountFor(Performance performance, Play play) {
         int result;
-        switch (play.getType()) {
+        switch (playFor(performance).getType()) {
             case "tragedy":
                 result = 40000;
                 if (performance.getAudience() > 30) {
@@ -71,7 +71,7 @@ public class StatementReader {
                 result += 300 * performance.getAudience();
                 break;
             default:
-                throw new IllegalStateException("Unknown type: " + play.getType());
+                throw new IllegalStateException("Unknown type: " + playFor(performance).getType());
         }
         return result;
     }
