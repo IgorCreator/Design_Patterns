@@ -13,7 +13,7 @@ public class Main {
         InvoiceDTO invoice = DBReader.parseInvoicesJSON();
         Map<String, PlayDTO> plays = DBReader.parsePlaysJson();
 
-        StatementReader reader = new StatementReader();
+        StatementRepresentation reader = new StatementRepresentation();
         System.out.println(reader.statement(invoice, plays));
     }
 

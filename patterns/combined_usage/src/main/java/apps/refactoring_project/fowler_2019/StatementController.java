@@ -7,18 +7,15 @@ import apps.refactoring_project.fowler_2019.pojo.Data;
 import apps.refactoring_project.fowler_2019.pojo.Performance;
 import apps.refactoring_project.fowler_2019.pojo.Play;
 
-import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public class StatementReader {
+public class StatementController {
 
     private Map<String, PlayDTO> plays;
 
-    public String statement(InvoiceDTO invoice, Map<String, PlayDTO> plays) {
-        return renderPlainText(createStatementData(invoice, plays));
-    }
-
-    private Data createStatementData(InvoiceDTO invoice, Map<String, PlayDTO> plays) {
+    public Data createStatementData(InvoiceDTO invoice, Map<String, PlayDTO> plays) {
         this.plays = plays;
         Data statementData = new Data();
         statementData.setCustomer(invoice.getCustomer());
@@ -49,53 +46,6 @@ public class StatementReader {
         return new Play(playDTO);
     }
 
-    private String renderPlainText(Data data) {
-        StringBuilder result = new StringBuilder("Statement for " + data.getCustomer() + "\n");
-
-        Currency usd = Currency.getInstance("USD");
-        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
-        format.setCurrency(usd);
-
-        for (Performance perf : data.getPerformances()) {
-            // print line for this order
-            result.append("\t")
-                    .append(perf.getPlay().getName()).append(":")
-                    .append(usd(perf.getAmount())).append(" ").append(usd.getCurrencyCode())
-                    .append(" (").append(perf.getAudience()).append(" seats)")
-                    .append("\n");
-        }
-
-        result.append("Amount owed is ").append(usd(data.getTotalAmount())).append(" ").append(usd.getCurrencyCode())
-                .append("\n").append("You earned ").append(data.getTotalVolumeCredits()).append(" credits").append("\n");
-
-        return result.toString();
-    }
-
-    private int totalAmount(Data data) {
-        return data.getPerformances().stream().mapToInt(Performance::getAmount).sum();
-    }
-
-    private int totalVolumeCredits(Data data) {
-        return data.getPerformances().stream().mapToInt(Performance::getVolumeCredits).sum();
-    }
-
-    private String usd(int number) {
-        Currency usd = Currency.getInstance("USD");
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.US);
-        numberFormat.setCurrency(usd);
-        return numberFormat.format(number / 100);
-    }
-
-    private int volumeCreditsFor(Performance performance) {
-        int result = 0;
-        // add volume credits
-        result += Math.max(performance.getAudience() - 30, 0);
-        // add extra credit for every ten comedy attendees
-        if ("comedy" == performance.getPlay().getType())
-            result += Math.floor(performance.getAudience() / 5);
-        return result;
-    }
-
     private int amountFor(Performance performance) {
         int result;
         switch (performance.getPlay().getType()) {
@@ -116,5 +66,23 @@ public class StatementReader {
                 throw new IllegalStateException("Unknown type: " + performance.getPlay().getType());
         }
         return result;
+    }
+
+    private int volumeCreditsFor(Performance performance) {
+        int result = 0;
+        // add volume credits
+        result += Math.max(performance.getAudience() - 30, 0);
+        // add extra credit for every ten comedy attendees
+        if ("comedy" == performance.getPlay().getType())
+            result += Math.floor(performance.getAudience() / 5);
+        return result;
+    }
+
+    private int totalAmount(Data data) {
+        return data.getPerformances().stream().mapToInt(Performance::getAmount).sum();
+    }
+
+    private int totalVolumeCredits(Data data) {
+        return data.getPerformances().stream().mapToInt(Performance::getVolumeCredits).sum();
     }
 }
