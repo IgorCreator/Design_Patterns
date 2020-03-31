@@ -12,9 +12,12 @@ import java.util.Map;
 public class StatementReader {
 
     private Map<String, Play> plays;
+    private Invoice invoice;
 
     public String statement(Invoice invoice, Map<String, Play> plays) {
         this.plays = plays;
+        this.invoice = invoice;
+
         int totalAmount = 0;
 
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
@@ -23,10 +26,6 @@ public class StatementReader {
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
         format.setCurrency(usd);
 
-        int volumeCredits = 0;
-        for (Performance perf : invoice.getPerformances()) {
-            volumeCredits += volumeCreditsFor(perf);
-        }
         for (Performance perf : invoice.getPerformances()) {
             // print line for this order
             result.append("\t")
@@ -39,9 +38,17 @@ public class StatementReader {
         }
 
         result.append("Amount owed is ").append(usd(totalAmount)).append(" ").append(usd.getCurrencyCode())
-                .append("\n").append("You earned ").append(volumeCredits).append(" credits").append("\n");
+                .append("\n").append("You earned ").append(getVolumeCredits()).append(" credits").append("\n");
 
         return result.toString();
+    }
+
+    private int getVolumeCredits() {
+        int volumeCredits = 0;
+        for (Performance perf : invoice.getPerformances()) {
+            volumeCredits += volumeCreditsFor(perf);
+        }
+        return volumeCredits;
     }
 
     private int volumeCreditsFor(Performance performance) {
