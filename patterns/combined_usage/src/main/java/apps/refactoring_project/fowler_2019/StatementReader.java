@@ -29,14 +29,14 @@ public class StatementReader {
             // print line for this order
             result.append("\t")
                     .append(playFor(perf).getName()).append(":")
-                    .append(format.format(amountFor(perf) / 100)).append(" ").append(usd.getCurrencyCode())
+                    .append(usd(amountFor(perf))).append(" ").append(usd.getCurrencyCode())
                     .append(" (").append(perf.getAudience()).append(" seats)")
                     .append("\n");
 
             totalAmount += amountFor(perf);
         }
 
-        result.append("Amount owed is ").append(format.format(totalAmount / 100)).append(" ").append(usd.getCurrencyCode())
+        result.append("Amount owed is ").append(usd(totalAmount)).append(" ").append(usd.getCurrencyCode())
                 .append("\n").append("You earned ").append(volumeCredits).append(" credits").append("\n");
 
         return result.toString();
@@ -54,6 +54,13 @@ public class StatementReader {
 
     private Play playFor(Performance perf) {
         return plays.get(perf.getPlayID());
+    }
+
+    private String usd(int number){
+        Currency usd = Currency.getInstance("USD");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.US);
+        numberFormat.setCurrency(usd);
+        return numberFormat.format(number / 100);
     }
 
     private int amountFor(Performance performance) {
