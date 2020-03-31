@@ -6,6 +6,8 @@ public class Data {
 
     String customer;
     List<Performance> performances;
+    int totalAmount;
+    int totalVolumeCredits;
 
     public String getCustomer() {
         return customer;
@@ -23,4 +25,19 @@ public class Data {
         this.performances = performances;
     }
 
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public int getTotalVolumeCredits() {
+        return totalVolumeCredits;
+    }
+
+    public void setTotalVolumeCredits(int totalVolumeCredits) {
+        this.totalVolumeCredits = totalVolumeCredits;
+    }
 }

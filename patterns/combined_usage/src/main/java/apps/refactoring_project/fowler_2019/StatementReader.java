@@ -13,30 +13,34 @@ import java.util.*;
 public class StatementReader {
 
     private Map<String, PlayDTO> plays;
-    Data data;
 
     public String statement(InvoiceDTO invoice, Map<String, PlayDTO> plays) {
+        return renderPlainText(createStatementData(invoice, plays));
+    }
+
+    private Data createStatementData(InvoiceDTO invoice, Map<String, PlayDTO> plays) {
         this.plays = plays;
         Data statementData = new Data();
         statementData.setCustomer(invoice.getCustomer());
         statementData.setPerformances(fillPerformances(invoice));
-        this.data = statementData;
-        return renderPlainText(statementData);
+        statementData.setTotalAmount(totalAmount(statementData));
+        statementData.setTotalVolumeCredits(totalVolumeCredits(statementData));
+        return statementData;
     }
-    private List<Performance> fillPerformances(InvoiceDTO invoice){
+
+    private List<Performance> fillPerformances(InvoiceDTO invoice) {
         List<Performance> performanceList = new ArrayList<>();
-        for(PerformanceDTO perf : invoice.getPerformances()){
+        for (PerformanceDTO perf : invoice.getPerformances()) {
             performanceList.add(enrichPerformance(perf));
         }
         return performanceList;
     }
+
     private Performance enrichPerformance(PerformanceDTO perf) {
         Performance performance = new Performance(perf);
-
         performance.setPlay(playFor(performance));
         performance.setAmount(amountFor(performance));
         performance.setVolumeCredits(volumeCreditsFor(performance));
-
         return performance;
     }
 
@@ -61,29 +65,21 @@ public class StatementReader {
                     .append("\n");
         }
 
-        result.append("Amount owed is ").append(usd(totalAmount())).append(" ").append(usd.getCurrencyCode())
-                .append("\n").append("You earned ").append(totalVolumeCredits()).append(" credits").append("\n");
+        result.append("Amount owed is ").append(usd(data.getTotalAmount())).append(" ").append(usd.getCurrencyCode())
+                .append("\n").append("You earned ").append(data.getTotalVolumeCredits()).append(" credits").append("\n");
 
         return result.toString();
     }
 
-    private int totalAmount() {
-        int result = 0;
-        for (Performance perf : data.getPerformances()) {
-            result += perf.getAmount();
-        }
-        return result;
+    private int totalAmount(Data data) {
+        return data.getPerformances().stream().mapToInt(Performance::getAmount).sum();
     }
 
-    private int totalVolumeCredits() {
-        int result = 0;
-        for (Performance perf : data.getPerformances()) {
-            result += perf.getVolumeCredits();
-        }
-        return result;
+    private int totalVolumeCredits(Data data) {
+        return data.getPerformances().stream().mapToInt(Performance::getVolumeCredits).sum();
     }
 
-    private String usd(int number){
+    private String usd(int number) {
         Currency usd = Currency.getInstance("USD");
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.US);
         numberFormat.setCurrency(usd);
@@ -95,7 +91,7 @@ public class StatementReader {
         // add volume credits
         result += Math.max(performance.getAudience() - 30, 0);
         // add extra credit for every ten comedy attendees
-        if("comedy" == performance.getPlay().getType())
+        if ("comedy" == performance.getPlay().getType())
             result += Math.floor(performance.getAudience() / 5);
         return result;
     }
