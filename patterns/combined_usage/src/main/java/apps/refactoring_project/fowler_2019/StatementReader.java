@@ -26,8 +26,6 @@ public class StatementReader {
         for (Performance perf : invoice.getPerformances()) {
             int thisAmount = 0;
 
-            thisAmount = amountFor(perf, playFor(perf));
-
             // add volume credits
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
             // add extra credit for every ten comedy attendees
@@ -37,11 +35,11 @@ public class StatementReader {
             // print line for this order
             result.append("\t")
                     .append(playFor(perf).getName()).append(":")
-                    .append(format.format(thisAmount / 100)).append(" ").append(usd.getCurrencyCode())
+                    .append(format.format(amountFor(perf) / 100)).append(" ").append(usd.getCurrencyCode())
                     .append(" (").append(perf.getAudience()).append(" seats)")
                     .append("\n");
 
-            totalAmount += thisAmount;
+            totalAmount += amountFor(perf);
         }
 
         result.append("Amount owed is ").append(format.format(totalAmount / 100)).append(" ").append(usd.getCurrencyCode())
@@ -54,7 +52,7 @@ public class StatementReader {
         return plays.get(perf.getPlayID());
     }
 
-    private int amountFor(Performance performance, Play play) {
+    private int amountFor(Performance performance) {
         int result;
         switch (playFor(performance).getType()) {
             case "tragedy":
