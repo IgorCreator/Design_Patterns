@@ -16,16 +16,18 @@ public class StatementReader {
     public String statement(Invoice invoice, Map<String, Play> plays) {
         this.plays = plays;
         int totalAmount = 0;
-        int volumeCredits = 0;
+
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
         Currency usd = Currency.getInstance("USD");
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
         format.setCurrency(usd);
 
+        int volumeCredits = 0;
         for (Performance perf : invoice.getPerformances()) {
             volumeCredits += volumeCreditsFor(perf);
-
+        }
+        for (Performance perf : invoice.getPerformances()) {
             // print line for this order
             result.append("\t")
                     .append(playFor(perf).getName()).append(":")
