@@ -80,13 +80,9 @@ public class StatementRepresentation {
     }
 
     private String usd(int number) {
-        StringBuilder result = new StringBuilder();
-
         Currency usd = Currency.getInstance("USD");
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.US);
         numberFormat.setCurrency(usd);
-
-        result.append(numberFormat.format(number / 100)).append(" ").append(usd.getCurrencyCode());
-        return result.toString();
+        return numberFormat.format(number / 100) + " " + usd.getCurrencyCode();
     }
 }

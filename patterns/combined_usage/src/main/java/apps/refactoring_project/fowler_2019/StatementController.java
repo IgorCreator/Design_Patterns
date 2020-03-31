@@ -33,9 +33,10 @@ public class StatementController {
         return performanceList;
     }
 
-    private Performance enrichPerformance(PerformanceDTO perf) {
-        Performance performance = new Performance(perf);
-        performance.setPlay(playFor(performance));
+    private Performance enrichPerformance(PerformanceDTO performanceDTO) {
+        Performance performance = new Performance(performanceDTO);
+        PerformanceCalculator calculator = new PerformanceCalculator(performanceDTO, playFor(performance));
+        performance.setPlay(calculator.getPlay());
         performance.setAmount(amountFor(performance));
         performance.setVolumeCredits(volumeCreditsFor(performance));
         return performance;
