@@ -24,13 +24,7 @@ public class StatementReader {
         format.setCurrency(usd);
 
         for (Performance perf : invoice.getPerformances()) {
-            int thisAmount = 0;
-
-            // add volume credits
-            volumeCredits += Math.max(perf.getAudience() - 30, 0);
-            // add extra credit for every ten comedy attendees
-            if("comedy" == playFor(perf).getType())
-                volumeCredits += Math.floor(perf.getAudience() / 5);
+            volumeCredits += volumeCreditsFor(perf);
 
             // print line for this order
             result.append("\t")
@@ -46,6 +40,16 @@ public class StatementReader {
                 .append("\n").append("You earned ").append(volumeCredits).append(" credits").append("\n");
 
         return result.toString();
+    }
+
+    private int volumeCreditsFor(Performance performance) {
+        int result = 0;
+        // add volume credits
+        result += Math.max(performance.getAudience() - 30, 0);
+        // add extra credit for every ten comedy attendees
+        if("comedy" == playFor(performance).getType())
+            result += Math.floor(performance.getAudience() / 5);
+        return result;
     }
 
     private Play playFor(Performance perf) {
