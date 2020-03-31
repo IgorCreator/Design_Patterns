@@ -34,7 +34,7 @@ public class StatementReader {
         }
 
         result.append("Amount owed is ").append(usd(totalAmount())).append(" ").append(usd.getCurrencyCode())
-                .append("\n").append("You earned ").append(getVolumeCredits()).append(" credits").append("\n");
+                .append("\n").append("You earned ").append(totalVolumeCredits()).append(" credits").append("\n");
 
         return result.toString();
     }
@@ -47,12 +47,19 @@ public class StatementReader {
         return result;
     }
 
-    private int getVolumeCredits() {
+    private int totalVolumeCredits() {
         int result = 0;
         for (Performance perf : invoice.getPerformances()) {
             result += volumeCreditsFor(perf);
         }
         return result;
+    }
+
+    private String usd(int number){
+        Currency usd = Currency.getInstance("USD");
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.US);
+        numberFormat.setCurrency(usd);
+        return numberFormat.format(number / 100);
     }
 
     private int volumeCreditsFor(Performance performance) {
@@ -67,13 +74,6 @@ public class StatementReader {
 
     private Play playFor(Performance perf) {
         return plays.get(perf.getPlayID());
-    }
-
-    private String usd(int number){
-        Currency usd = Currency.getInstance("USD");
-        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(Locale.US);
-        numberFormat.setCurrency(usd);
-        return numberFormat.format(number / 100);
     }
 
     private int amountFor(Performance performance) {
