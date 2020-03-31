@@ -1,5 +1,8 @@
 package apps.refactoring_project.fowler_2019;
 
+import apps.refactoring_project.fowler_2019.calc.ComedyCalculator;
+import apps.refactoring_project.fowler_2019.calc.PerformanceCalculator;
+import apps.refactoring_project.fowler_2019.calc.TragedyCalculator;
 import apps.refactoring_project.fowler_2019.db.dto.InvoiceDTO;
 import apps.refactoring_project.fowler_2019.db.dto.PerformanceDTO;
 import apps.refactoring_project.fowler_2019.db.dto.PlayDTO;
@@ -34,11 +37,19 @@ public class StatementController {
 
     private Performance enrichPerformance(PerformanceDTO performanceDTO) {
         Performance performance = new Performance(performanceDTO);
-        PerformanceCalculator calculator = new PerformanceCalculator(performanceDTO, playFor(performance));
+        PerformanceCalculator calculator = createPerformanceCalculator(performanceDTO, playFor(performance));
         performance.setPlay(calculator.getPlay());
         performance.setAmount(calculator.getAmount());
         performance.setVolumeCredits(calculator.getVolumeCredits());
         return performance;
+    }
+
+    private PerformanceCalculator createPerformanceCalculator(PerformanceDTO performance, PlayDTO play) {
+        switch (play.getType()){
+            case "tragedy" : return new TragedyCalculator(performance, play);
+            case "comedy" : return new ComedyCalculator(performance, play);
+            default: throw new IllegalStateException("Unknown type: " + play.getType());
+        }
     }
 
     private PlayDTO playFor(Performance perf) {

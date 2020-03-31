@@ -1,13 +1,14 @@
 package apps.refactoring_project.fowler_2019.pojo;
 
 import apps.refactoring_project.fowler_2019.db.dto.PerformanceDTO;
+import apps.refactoring_project.fowler_2019.db.dto.PlayDTO;
 
 public class Performance {
 
     String playID;
     int audience;
 
-    Play play;
+    PlayDTO play;
     int amount;
     int volumeCredits;
 
@@ -32,11 +33,11 @@ public class Performance {
         this.audience = audience;
     }
 
-    public Play getPlay() {
+    public PlayDTO getPlay() {
         return play;
     }
 
-    public void setPlay(Play play) {
+    public void setPlay(PlayDTO play) {
         this.play = play;
     }
 
