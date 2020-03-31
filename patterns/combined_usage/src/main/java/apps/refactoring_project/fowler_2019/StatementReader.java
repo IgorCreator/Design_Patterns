@@ -11,7 +11,10 @@ import java.util.Map;
 
 public class StatementReader {
 
-    public String statement(Invoice invoice, Map<String,Play> plays) {
+    private Map<String, Play> plays;
+
+    public String statement(Invoice invoice, Map<String, Play> plays) {
+        this.plays = plays;
         int totalAmount = 0;
         int volumeCredits = 0;
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
@@ -21,21 +24,19 @@ public class StatementReader {
         format.setCurrency(usd);
 
         for (Performance perf : invoice.getPerformances()) {
-            Play play = plays.get(perf.getPlayID());
-
             int thisAmount = 0;
 
-            thisAmount = amountFor(perf, play);
+            thisAmount = amountFor(perf, playFor(perf));
 
             // add volume credits
             volumeCredits += Math.max(perf.getAudience() - 30, 0);
             // add extra credit for every ten comedy attendees
-            if("comedy" == play.getType())
+            if("comedy" == playFor(perf).getType())
                 volumeCredits += Math.floor(perf.getAudience() / 5);
 
             // print line for this order
             result.append("\t")
-                    .append(play.getName()).append(":")
+                    .append(playFor(perf).getName()).append(":")
                     .append(format.format(thisAmount / 100)).append(" ").append(usd.getCurrencyCode())
                     .append(" (").append(perf.getAudience()).append(" seats)")
                     .append("\n");
@@ -47,6 +48,10 @@ public class StatementReader {
                 .append("\n").append("You earned ").append(volumeCredits).append(" credits").append("\n");
 
         return result.toString();
+    }
+
+    private Play playFor(Performance perf) {
+        return plays.get(perf.getPlayID());
     }
 
     private int amountFor(Performance performance, Play play) {
