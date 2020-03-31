@@ -18,8 +18,6 @@ public class StatementReader {
         this.plays = plays;
         this.invoice = invoice;
 
-        int totalAmount = 0;
-
         StringBuilder result = new StringBuilder("Statement for " + invoice.getCustomer() + "\n");
 
         Currency usd = Currency.getInstance("USD");
@@ -33,22 +31,28 @@ public class StatementReader {
                     .append(usd(amountFor(perf))).append(" ").append(usd.getCurrencyCode())
                     .append(" (").append(perf.getAudience()).append(" seats)")
                     .append("\n");
-
-            totalAmount += amountFor(perf);
         }
 
-        result.append("Amount owed is ").append(usd(totalAmount)).append(" ").append(usd.getCurrencyCode())
+        result.append("Amount owed is ").append(usd(totalAmount())).append(" ").append(usd.getCurrencyCode())
                 .append("\n").append("You earned ").append(getVolumeCredits()).append(" credits").append("\n");
 
         return result.toString();
     }
 
-    private int getVolumeCredits() {
-        int volumeCredits = 0;
+    private int totalAmount() {
+        int result = 0;
         for (Performance perf : invoice.getPerformances()) {
-            volumeCredits += volumeCreditsFor(perf);
+            result += amountFor(perf);
         }
-        return volumeCredits;
+        return result;
+    }
+
+    private int getVolumeCredits() {
+        int result = 0;
+        for (Performance perf : invoice.getPerformances()) {
+            result += volumeCreditsFor(perf);
+        }
+        return result;
     }
 
     private int volumeCreditsFor(Performance performance) {
