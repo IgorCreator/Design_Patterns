@@ -1,6 +1,6 @@
 package apps.refactoring_project.fowler_2019.pojo;
 
-public class Performances {
+public class Performance {
 
     String playID;
     int audience;

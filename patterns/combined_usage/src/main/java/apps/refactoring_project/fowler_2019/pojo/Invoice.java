@@ -5,7 +5,7 @@ import java.util.List;
 public class Invoice {
 
     String customer;
-    List<Performances> performances;
+    List<Performance> performances;
 
     public String getCustomer() {
         return customer;
@@ -15,11 +15,11 @@ public class Invoice {
         this.customer = customer;
     }
 
-    public List<Performances> getPerformances() {
+    public List<Performance> getPerformances() {
         return performances;
     }
 
-    public void setPerformens(List<Performances> performances) {
+    public void setPerformances(List<Performance> performances) {
         this.performances = performances;
     }
 }

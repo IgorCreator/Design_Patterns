@@ -1,7 +1,7 @@
 package apps.refactoring_project.fowler_2019;
 
 import apps.refactoring_project.fowler_2019.pojo.Invoice;
-import apps.refactoring_project.fowler_2019.pojo.Performances;
+import apps.refactoring_project.fowler_2019.pojo.Performance;
 import apps.refactoring_project.fowler_2019.pojo.Play;
 
 import java.text.NumberFormat;
@@ -20,7 +20,7 @@ public class StatementReader {
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
         format.setCurrency(usd);
 
-        for (Performances perf : invoice.getPerformances()) {
+        for (Performance perf : invoice.getPerformances()) {
             Play play = plays.get(perf.getPlayID());
 
             int thisAmount = 0;
@@ -49,25 +49,25 @@ public class StatementReader {
         return result.toString();
     }
 
-    private int amountFor(Performances perf, Play play) {
-        int thisAmount;
+    private int amountFor(Performance performance, Play play) {
+        int result;
         switch (play.getType()) {
             case "tragedy":
-                thisAmount = 40000;
-                if (perf.getAudience() > 30) {
-                    thisAmount += 1000 * (perf.getAudience() - 30);
+                result = 40000;
+                if (performance.getAudience() > 30) {
+                    result += 1000 * (performance.getAudience() - 30);
                 }
                 break;
             case "comedy":
-                thisAmount = 30000;
-                if (perf.getAudience() > 20) {
-                    thisAmount += 10000 + 500 * (perf.getAudience() - 20);
+                result = 30000;
+                if (performance.getAudience() > 20) {
+                    result += 10000 + 500 * (performance.getAudience() - 20);
                 }
-                thisAmount += 300 * perf.getAudience();
+                result += 300 * performance.getAudience();
                 break;
             default:
                 throw new IllegalStateException("Unknown type: " + play.getType());
         }
-        return thisAmount;
+        return result;
     }
 }
