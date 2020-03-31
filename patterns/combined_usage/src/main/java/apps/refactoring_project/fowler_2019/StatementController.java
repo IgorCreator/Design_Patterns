@@ -5,7 +5,6 @@ import apps.refactoring_project.fowler_2019.db.dto.PerformanceDTO;
 import apps.refactoring_project.fowler_2019.db.dto.PlayDTO;
 import apps.refactoring_project.fowler_2019.pojo.Data;
 import apps.refactoring_project.fowler_2019.pojo.Performance;
-import apps.refactoring_project.fowler_2019.pojo.Play;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,46 +36,13 @@ public class StatementController {
         Performance performance = new Performance(performanceDTO);
         PerformanceCalculator calculator = new PerformanceCalculator(performanceDTO, playFor(performance));
         performance.setPlay(calculator.getPlay());
-        performance.setAmount(amountFor(performance));
-        performance.setVolumeCredits(volumeCreditsFor(performance));
+        performance.setAmount(calculator.getAmount());
+        performance.setVolumeCredits(calculator.getVolumeCredits());
         return performance;
     }
 
-    private Play playFor(Performance perf) {
-        PlayDTO playDTO = plays.get(perf.getPlayID());
-        return new Play(playDTO);
-    }
-
-    private int amountFor(Performance performance) {
-        int result;
-        switch (performance.getPlay().getType()) {
-            case "tragedy":
-                result = 40000;
-                if (performance.getAudience() > 30) {
-                    result += 1000 * (performance.getAudience() - 30);
-                }
-                break;
-            case "comedy":
-                result = 30000;
-                if (performance.getAudience() > 20) {
-                    result += 10000 + 500 * (performance.getAudience() - 20);
-                }
-                result += 300 * performance.getAudience();
-                break;
-            default:
-                throw new IllegalStateException("Unknown type: " + performance.getPlay().getType());
-        }
-        return result;
-    }
-
-    private int volumeCreditsFor(Performance performance) {
-        int result = 0;
-        // add volume credits
-        result += Math.max(performance.getAudience() - 30, 0);
-        // add extra credit for every ten comedy attendees
-        if ("comedy" == performance.getPlay().getType())
-            result += Math.floor(performance.getAudience() / 5);
-        return result;
+    private PlayDTO playFor(Performance perf) {
+        return plays.get(perf.getPlayID());
     }
 
     private int totalAmount(Data data) {
