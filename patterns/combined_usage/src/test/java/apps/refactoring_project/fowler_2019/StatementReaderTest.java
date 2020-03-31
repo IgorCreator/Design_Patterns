@@ -1,8 +1,8 @@
 package apps.refactoring_project.fowler_2019;
 
 import apps.refactoring_project.fowler_2019.db.DBReader;
-import apps.refactoring_project.fowler_2019.pojo.Invoice;
-import apps.refactoring_project.fowler_2019.pojo.Play;
+import apps.refactoring_project.fowler_2019.db.dto.InvoiceDTO;
+import apps.refactoring_project.fowler_2019.db.dto.PlayDTO;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,8 +16,8 @@ class StatementReaderTest {
     public void assertExit() throws IOException {
         StatementReader reader = new StatementReader();
 
-        Invoice invoice = DBReader.parseInvoicesJSON();
-        Map<String, Play> plays = DBReader.parsePlaysJson();
+        InvoiceDTO invoice = DBReader.parseInvoicesJSON();
+        Map<String, PlayDTO> plays = DBReader.parsePlaysJson();
 
         String expected = "Statement for BigCo\n" +
                 "\tHamlet:$650.00 USD (55 seats)\n" +

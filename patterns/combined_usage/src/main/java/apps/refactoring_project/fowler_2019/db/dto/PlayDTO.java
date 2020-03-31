@@ -1,16 +1,9 @@
-package apps.refactoring_project.fowler_2019.pojo;
+package apps.refactoring_project.fowler_2019.db.dto;
 
-import apps.refactoring_project.fowler_2019.db.dto.PlayDTO;
-
-public class Play {
+public class PlayDTO {
 
     String name;
     String type;
-
-    public Play(PlayDTO playDTO) {
-        this.name = playDTO.getName();
-        this.type = playDTO.getType();
-    }
 
     public String getName() {
         return name;

@@ -2,7 +2,7 @@ package apps.refactoring_project.fowler_2019.pojo;
 
 import java.util.List;
 
-public class Invoice {
+public class Data {
 
     String customer;
     List<Performance> performances;
@@ -22,4 +22,5 @@ public class Invoice {
     public void setPerformances(List<Performance> performances) {
         this.performances = performances;
     }
+
 }
