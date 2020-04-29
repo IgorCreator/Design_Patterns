@@ -6,7 +6,8 @@ public class Singleton {
 	private static Singleton uniqueInstance;
  
 	private Singleton() {}
- 
+
+	//Laz Loading creation
 	public static Singleton getInstance() {
 		if (uniqueInstance == null) {
 			uniqueInstance = new Singleton();
@@ -16,6 +17,6 @@ public class Singleton {
  
 	// other useful methods here
 	public String getDescription() {
-		return "I'm a classic Singleton!";
+		return "I'm a lazy loaded Singleton!";
 	}
 }
