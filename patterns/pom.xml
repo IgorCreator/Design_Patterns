@@ -23,6 +23,8 @@
         <module>state</module>
         <module>proxxy</module>
         <module>combined_usage</module>
+        <module>builder</module>
+        <module>template-method</module>
     </modules>
 
     <build>
