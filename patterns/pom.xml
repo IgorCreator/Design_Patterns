@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>adapter</module>
+        <module>builder</module>
         <module>command</module>
         <module>composite</module>
         <module>decorator</module>
@@ -22,8 +23,7 @@
         <module>template-method</module>
         <module>state</module>
         <module>proxxy</module>
-        <module>combined_usage</module>
-        <module>builder</module>
+        <module>combined_usage</module
         <module>template-method</module>
         <module>prototype</module>
     </modules>

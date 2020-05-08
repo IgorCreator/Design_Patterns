@@ -5,7 +5,7 @@ import com.prog.pattern.example.correct.impl.v5.factory.card.CreditCard;
 import com.prog.pattern.example.correct.impl.v5.factory.card.CreditCardFactory;
 import com.prog.pattern.example.correct.impl.v5.factory.card.Validator;
 
-public class VisaFactory extends CreditCardFactory {
+public class  VisaFactory extends CreditCardFactory {
 
 	@Override
 	public CreditCard getCreditCard(CardType cardType) {
