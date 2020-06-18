@@ -27,6 +27,7 @@
         <module>template-method</module>
         <module>prototype</module>
         <module>flyweight</module>
+        <module>visitor</module>
     </modules>
 
     <build>
